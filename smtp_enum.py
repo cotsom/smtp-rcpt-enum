@@ -7,13 +7,9 @@ reset_color = "\033[0m"
 
 def print_result(result_time, to_address, response_code, response_message):
     if result_time < 4:
-        print(f'{green_color}[+] {to_address} - {result_time}')
-        print(f"{response_code} {response_message} {reset_color}")
-        print('-----------------------------------------')
+        print(f'{green_color}[+] {to_address} - {result_time}\n{response_code} {response_message} {reset_color}\n-----------------------------------------')
     else:
-        print(f'[-] {to_address} - {result_time}')
-        print(f"{response_code} {response_message}")
-        print('-----------------------------------------')
+        print(f'[-] {to_address} - {result_time}\n{response_code} {response_message}\n-----------------------------------------')
 
 def start_enum(user):
     smtp_server = 'mail.fciit.ru'
@@ -26,7 +22,7 @@ def start_enum(user):
 
     helo_command = 'helo ya.ru'
     mail_command = f'MAIL FROM:<{from_address}>'
-    rcpt_command = f'RCPT TO:<{user}@fciit.ru>'
+    rcpt_command = f'RCPT TO:<{user.strip()}@fciit.ru>'
 
     server.docmd(helo_command)
     server.docmd(mail_command)
@@ -41,14 +37,13 @@ def start_enum(user):
     server.quit()
 
 def setup_enum(file_path):
-    with open(file_path) as file:  
+    with open(file_path, 'r') as file:  
         users = file.readlines()
-        for user in users:
-            # user = user.replace("\n", "")
-            with concurrent.futures.ThreadPoolExecutor(max_workers=25) as executor:
-                executor.map(start_enum, user)
+        # user = user.replace("\n", "")
+        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+            executor.map(start_enum, users)
             
 
 if __name__ == '__main__':
-    file_path = "test.txt"
+    file_path = "users.txt"
     setup_enum(file_path)
