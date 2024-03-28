@@ -12,17 +12,17 @@ def print_result(result_time, to_address, response_code, response_message):
         print(f'[-] {to_address} - {result_time}\n{response_code} {response_message}\n-----------------------------------------')
 
 def start_enum(user):
-    smtp_server = 'mail.fciit.ru'
+    smtp_server = 'site.ru'
     smtp_port = 25
 
-    from_address = 'ya@fciit.com'
+    from_address = 'ya@site.com'
     to_address = user
 
     server = smtplib.SMTP(smtp_server, smtp_port)
 
     helo_command = 'helo ya.ru'
     mail_command = f'MAIL FROM:<{from_address}>'
-    rcpt_command = f'RCPT TO:<{user.strip()}@fciit.ru>'
+    rcpt_command = f'RCPT TO:<{user.strip()}@site.ru>'
 
     server.docmd(helo_command)
     server.docmd(mail_command)
